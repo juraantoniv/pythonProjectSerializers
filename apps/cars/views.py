@@ -33,3 +33,13 @@ class CarRetriveUpdateDestroyViev(APIView):
         car = CarModel.objects.get(pk=pk)
         res = CarSerializers(car)
         return Response(res.data, status=status.HTTP_200_OK)
+
+    def delete(self, *args, **kwargs):
+        pk = kwargs.get('pk')
+        exists = CarModel.objects.filter(pk=pk).exists()
+
+        if not exists:
+            return Response('Not found', status=status.HTTP_404_NOT_FOUND)
+        car = CarModel.objects.get(pk=pk)
+        car.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
